@@ -81,9 +81,18 @@ void AUShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 	check(PlayerInputComponent);
 
+	// Movement
 	PlayerInputComponent->BindAxis("MoveForward", this, &AUShooterCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AUShooterCharacter::MoveRight);
 	PlayerInputComponent->BindAxis("TurnRate", this, &AUShooterCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("LookUpRate", this, &AUShooterCharacter::LookUpAtRate);
+
+	// Mouse Look
+	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	// Jumping
+	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
 }
 
