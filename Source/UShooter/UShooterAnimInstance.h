@@ -10,28 +10,28 @@
  * 
  */
 UCLASS()
-class SHOOTER_API UShooterAnimInstance : public UAnimInstance
+class USHOOTER_API UUShooterAnimInstance : public UAnimInstance
 {
 	GENERATED_BODY()
 public:
-	UFUNCTION(BlueprintCallable)
-	void UpdateAnimationProperties(float DeltaTime); // "Tick" function in Actor Classes
+    UFUNCTION(BlueprintCallable)
+    void UpdateAnimationProperties(float DeltaTime); // "Tick" function in Actor Classes
 
 	virtual void NativeInitializeAnimation() override; // "Begin Play" for Anim Instance Class
-
-private:
+	
+	private:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
-	class AShooterCharacter* UShooterCharacter; // Reference to a character
+	class AUShooterCharacter* UShooterCharacter; // Reference to a character
 
 	/** The speed of the character */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	float Speed;
 
-	/** Whether or not the character is in the air */
+	/* Whether or not the character is in the air */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsInAir;
-
-	/** Whether or not the character is moving */
+	
+	/* Whether or not the character is moving */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Movement, meta = (AllowPrivateAccess = "true"))
 	bool bIsAccelerating;
 };
