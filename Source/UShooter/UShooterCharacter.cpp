@@ -4,6 +4,8 @@
 #include "UShooterCharacter.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Kismet/GameplayStatics.h"
+#include "Sound/SoundCue.h"
 
 // Sets default values
 AUShooterCharacter::AUShooterCharacter():
@@ -68,6 +70,14 @@ void AUShooterCharacter::LookUpAtRate(float Rate)
 	AddControllerPitchInput(Rate * BaseLookUpRate * GetWorld()->GetDeltaSeconds()); // Deg/sec * sec/frame
 }
 
+void AUShooterCharacter::FireWeapon()
+{
+	if(FireSound)
+	{
+		UGameplayStatics::PlaySound2D(this, FireSound);
+	}
+}
+
 // Called every frame
 void AUShooterCharacter::Tick(float DeltaTime)
 {
@@ -94,5 +104,8 @@ void AUShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 	// Jumping
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction("Jump", IE_Released, this, &ACharacter::StopJumping);
+	
+	// Firing
+	PlayerInputComponent->BindAction("FireButton", IE_Pressed, this, &AUShooterCharacter::FireWeapon);
 }
 
