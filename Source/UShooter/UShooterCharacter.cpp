@@ -2,6 +2,8 @@
 
 
 #include "UShooterCharacter.h"
+
+#include "DrawDebugHelpers.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Engine/SkeletalMeshSocket.h"
@@ -86,6 +88,19 @@ void AUShooterCharacter::FireWeapon()
 		if(MuzzleFlash)
 		{
 			UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), MuzzleFlash, SocketTransform);
+		}
+		
+		FHitResult FireHit;
+		const FVector Start { SocketTransform.GetLocation() };
+		const FQuat Rotation { SocketTransform.GetRotation() };
+		const FVector RotationAxis { Rotation.GetAxisX() };
+		const FVector End { Start + RotationAxis * 50'000.f }; // Magic number
+		
+		GetWorld()->LineTraceSingleByChannel(FireHit, Start, End, ECollisionChannel::ECC_Visibility);
+		if(FireHit.bBlockingHit)
+		{
+			DrawDebugLine(GetWorld(), Start, End, FColor::Red, false, 2.f);
+			DrawDebugPoint(GetWorld(), FireHit.Location, 5.f, FColor::Red, false, 2.f);
 		}
 	}
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
